@@ -43,6 +43,37 @@ app_license = "MIT"
 # 	"Role": "home_page"
 # }
 
+# Fixtures
+# ----------
+
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": {
+            "module": "Bancosecha"
+        }
+    },
+    {
+        "dt": "Property Setter",
+        "filters": {
+            "module": "Bancosecha"
+        }
+    },
+    {
+        "dt": "Print Format",
+        "filters": {
+            "module": "Bancosecha"
+        }
+    },
+    {
+        "dt": "Module Profile",
+        "filters": {
+            "name": "Bancosecha"
+        }
+    }
+
+]
+
 # Generators
 # ----------
 
