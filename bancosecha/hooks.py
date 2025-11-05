@@ -66,6 +66,16 @@ fixtures = [
         }
     },
     {
+        "dt": "Role Profile",
+        "filters": {
+            "name": [
+                "in", [
+                    "CEO"
+                ]
+            ]
+        }
+    },
+    {
         "dt": "Module Profile",
         "filters": {
             "name": "Bancosecha"

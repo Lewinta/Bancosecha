@@ -1,0 +1,137 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2025-11-02 23:47:36.166910",
+  "name": "CEO",
+  "role_profile": "CEO",
+  "roles": [
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Auditor"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Analytics"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Inbox User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Prepared Report User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Translator"
+   }
+  ]
+ }
+]
