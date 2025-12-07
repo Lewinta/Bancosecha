@@ -1,0 +1,124 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"HOi8OvxabS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Bancosecha</span>\",\"col\":12}},{\"id\":\"QOpFxyLb1O\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"QPVio7uSrL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check Issuer\",\"col\":3}},{\"id\":\"3MwKImrK6W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check Entry\",\"col\":3}},{\"id\":\"4-xKD_EVTf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"xyWF3gcKjw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"ZnBk9oDQ2O\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Shipping Box Price\",\"col\":3}},{\"id\":\"PeRJP4yCVB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"S3TBQq_ibn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Settings\",\"col\":3}},{\"id\":\"5zpBzuJwQs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"7hXvtyA9dP\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "creation": "2025-11-13 08:42:03.236081",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "money-coins-1",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Bancosecha",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Accounts Receivable",
+   "link_count": 0,
+   "link_to": "Accounts Receivable",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-11-29 06:53:07.667052",
+ "modified_by": "Administrator",
+ "module": "Bancosecha",
+ "name": "Bancosecha",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Cashier"
+  },
+  {
+   "role": "CEO"
+  },
+  {
+   "role": "Accounts Manager"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Check Issuer",
+   "link_to": "Check Issuer",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Shipping Box Price",
+   "link_to": "Shipping Box Price",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{} Active",
+   "label": "Customer",
+   "link_to": "Customer",
+   "stats_filter": "[[\"Customer\",\"disabled\",\"=\",0,false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Sales Invoice",
+   "link_to": "Sales Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Dashboard",
+   "link_to": "Bancosecha",
+   "type": "Dashboard"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Settings",
+   "link_to": "Bancosecha Settings",
+   "type": "DocType"
+  },
+  {
+   "color": "Red",
+   "doc_view": "List",
+   "format": "{} Registered",
+   "label": "Check Entry",
+   "link_to": "Check Entry",
+   "stats_filter": "[[\"Check Entry\",\"workflow_state\",\"=\",\"Registered\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Item",
+   "link_to": "Item",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Bancosecha"
+}

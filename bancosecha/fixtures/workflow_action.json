@@ -1,0 +1,23 @@
+[
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-11-12 02:05:44.866663",
+  "name": "seo3go2um2",
+  "permitted_roles": [
+   {
+    "parent": "seo3go2um2",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Cashier"
+   }
+  ],
+  "reference_doctype": "Check Entry",
+  "reference_name": "CK-25-000003",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Registered"
+ }
+]

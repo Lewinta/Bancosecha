@@ -1,0 +1,74 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-11-03 08:51:57.472574",
+  "name": "Pending",
+  "style": "",
+  "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "ok-sign",
+  "modified": "2025-11-03 08:51:57.477123",
+  "name": "Approved",
+  "style": "Success",
+  "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "remove",
+  "modified": "2025-11-03 08:51:57.482459",
+  "name": "Rejected",
+  "style": "Danger",
+  "workflow_state_name": "Rejected"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-11-12 00:19:28.017861",
+  "name": "Registered",
+  "style": "Warning",
+  "workflow_state_name": "Registered"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-11-12 00:18:48.151847",
+  "name": "Void",
+  "style": "Danger",
+  "workflow_state_name": "Void"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-11-12 00:18:42.586579",
+  "name": "Collected",
+  "style": "Success",
+  "workflow_state_name": "Collected"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-11-12 00:21:59.131304",
+  "name": "Cashed",
+  "style": "Info",
+  "workflow_state_name": "Cashed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-11-12 00:18:35.892520",
+  "name": "Lost",
+  "style": "Danger",
+  "workflow_state_name": "Lost"
+ }
+]
