@@ -10,7 +10,9 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/bancosecha/css/bancosecha.css"
-# app_include_js = "/assets/bancosecha/js/bancosecha.js"
+app_include_js = [
+    "floating_button.bundle.js",
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/bancosecha/css/bancosecha.css"
@@ -49,6 +51,10 @@ doctype_js = {
 # ----------
 
 fixtures = [
+    {
+        "dt": "Custom DocPerm",
+        "filters": { }
+    },
     {
         "dt": "Custom Field",
         "filters": {
@@ -173,13 +179,12 @@ fixtures = [
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Sales Invoice": {
+		"validate": "bancosecha.bancosecha.controllers.sales_invoice.validate",
+		"before_submit": "bancosecha.bancosecha.controllers.sales_invoice.before_submit",
+	}
+}
 
 # Scheduled Tasks
 # ---------------
