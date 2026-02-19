@@ -14,7 +14,7 @@ class CheckEntry(Document):
 		self.fetch_accounts()
 
 	def on_submit(self):
-		# self.validate_attachment()
+		self.validate_attachment()
 		self.set_default_issuer()
 
 		# 🔹 Trigger payment entry when workflow state is "Cashed"
@@ -122,6 +122,7 @@ class CheckEntry(Document):
 			"voucher_type": "Journal Entry",
 			"posting_date": self.posting_date,
 			"company": self.company,
+			"docstatus": 1,
 			"remarks": f"Check Entry: {self.name}",
 			"custom_check_entry": self.name
 		})
@@ -157,12 +158,12 @@ class CheckEntry(Document):
 				"cost_center": self.cost_center
 			})
 
-		jv.insert(ignore_permissions=True)
-		jv.submit()
+		jv.docstatus = 1
+		jv.save(ignore_permissions=True)
 
 		self.db_set("journal_entry", jv.name)
 
-		frappe.msgprint(_("Journal Entry {0} created for payment.").format(jv.name))
+		# frappe.msgprint(_("Journal Entry {0} created for payment.").format(jv.name))
 
 	def make_clearance_entry(self):
 		jv = frappe.new_doc("Journal Entry")
@@ -171,6 +172,7 @@ class CheckEntry(Document):
 			"voucher_type": "Journal Entry",
 			"posting_date": nowdate(),
 			"company": self.company,
+			"docstatus": 1,
 			"remarks": f"Check Clearance Entry: {self.name}",
 			"custom_check_entry": self.name
 		})
@@ -225,6 +227,5 @@ class CheckEntry(Document):
 			"reference_name": self.journal_entry
 		})
 
-		jv.insert(ignore_permissions=True)
-		jv.submit()
+		jv.save(ignore_permissions=True)
 

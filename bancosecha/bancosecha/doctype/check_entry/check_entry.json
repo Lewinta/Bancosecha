@@ -22,6 +22,7 @@
   "fee",
   "column_break_myoq",
   "mode_of_payment",
+  "net_amount",
   "amended_from",
   "accounts_sb",
   "income_account",
@@ -189,6 +190,15 @@
    "fieldtype": "Link",
    "label": "Expense Account",
    "options": "Account"
+  },
+  {
+   "bold": 1,
+   "fieldname": "net_amount",
+   "fieldtype": "Currency",
+   "label": "Net Amount",
+   "non_negative": 1,
+   "precision": "2",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
@@ -201,7 +211,7 @@
    "link_fieldname": "custom_check_entry"
   }
  ],
- "modified": "2025-11-13 08:23:16.501228",
+ "modified": "2025-12-21 10:56:30.964567",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "Check Entry",

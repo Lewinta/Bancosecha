@@ -7,7 +7,8 @@ def boot_session(bootinfo):
             continue
         defaults_map[row.invoice_type] = {
             "default_supplier": row.default_supplier,
-            "default_item": row.default_item
+            "default_item": row.default_item,
+            "default_sales_tax_template": row.default_sales_tax_template,
         }
     
     bootinfo.bancosecha = {

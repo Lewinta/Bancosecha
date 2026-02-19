@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"HOi8OvxabS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Bancosecha</span>\",\"col\":12}},{\"id\":\"QOpFxyLb1O\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"QPVio7uSrL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check Issuer\",\"col\":3}},{\"id\":\"3MwKImrK6W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check Entry\",\"col\":3}},{\"id\":\"4-xKD_EVTf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"xyWF3gcKjw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"ZnBk9oDQ2O\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Shipping Box Price\",\"col\":3}},{\"id\":\"PeRJP4yCVB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"S3TBQq_ibn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Settings\",\"col\":3}},{\"id\":\"5zpBzuJwQs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"7hXvtyA9dP\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"HOi8OvxabS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Bancosecha</span>\",\"col\":12}},{\"id\":\"0EjKoDeMKq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pos Opening Shift\",\"col\":3}},{\"id\":\"QOpFxyLb1O\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"QPVio7uSrL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check Issuer\",\"col\":3}},{\"id\":\"3MwKImrK6W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Check Entry\",\"col\":3}},{\"id\":\"srAop4kIfa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pos Closing Shift\",\"col\":3}},{\"id\":\"4-xKD_EVTf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"xyWF3gcKjw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"ZnBk9oDQ2O\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Shipping Box Price\",\"col\":3}},{\"id\":\"PeRJP4yCVB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"S3TBQq_ibn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Settings\",\"col\":3}},{\"id\":\"5zpBzuJwQs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"LsZT6PclGw\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Management</b></span>\",\"col\":12}},{\"id\":\"PeWsoG1OfN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Journal Entry\",\"col\":3}},{\"id\":\"G-HCs8SxxQ\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"7hXvtyA9dP\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2025-11-13 08:42:03.236081",
  "custom_blocks": [],
  "docstatus": 0,
@@ -33,7 +33,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-29 06:53:07.667052",
+ "modified": "2025-12-28 22:08:35.680957",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "Bancosecha",
@@ -72,6 +72,14 @@
    "type": "DocType"
   },
   {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Journal Entry",
+   "link_to": "Journal Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
    "color": "Green",
    "doc_view": "List",
    "format": "{} Active",
@@ -91,6 +99,14 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Pos Opening Shift",
+   "link_to": "POS Opening Shift",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Dashboard",
    "link_to": "Bancosecha",
    "type": "Dashboard"
@@ -100,6 +116,14 @@
    "doc_view": "List",
    "label": "Settings",
    "link_to": "Bancosecha Settings",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Pos Closing Shift",
+   "link_to": "POS Closing Shift",
+   "stats_filter": "[]",
    "type": "DocType"
   },
   {

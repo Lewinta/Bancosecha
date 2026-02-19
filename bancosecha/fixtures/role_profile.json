@@ -2,7 +2,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "modified": "2025-11-02 23:47:36.166910",
+  "modified": "2026-01-08 14:19:04.887983",
   "name": "CEO",
   "role_profile": "CEO",
   "roles": [
@@ -131,6 +131,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Translator"
+   },
+   {
+    "parent": "CEO",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "CEO"
    }
   ]
  }

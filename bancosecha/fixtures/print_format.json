@@ -1,1 +1,36 @@
-[]
+[
+ {
+  "absolute_value": 0,
+  "align_labels_right": 0,
+  "css": "    .check-entry-container {\n        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n        font-size: 12.5px;\n        color: #2F3A3A;\n        max-width: 700px;\n        margin: auto;\n        background: #fff;\n        border: 1px solid #eaeaea;\n        border-radius: 10px;\n        padding: 28px 36px;\n        box-shadow: 0 2px 10px rgba(0,0,0,0.05);\n    }\n\n    .check-entry-header {\n        text-align: center;\n        margin-bottom: 22px;\n    }\n\n    .check-entry-header img {\n        max-height: 70px;\n        margin-bottom: 6px;\n    }\n\n    .check-entry-header h2 {\n        margin: 6px 0 2px;\n        color: #005B4F;\n        font-weight: 700;\n        font-size: 20px;\n    }\n\n    .check-entry-header h4 {\n        margin: 0;\n        color: #007F65;\n        font-size: 13px;\n        letter-spacing: 0.4px;\n    }\n\n    .info-grid {\n        width: 100%;\n        border-collapse: collapse;\n        margin-bottom: 25px;\n    }\n\n    .info-grid td {\n        padding: 3px 6px;\n        vertical-align: middle;\n        white-space: nowrap;\n    }\n\n    /* narrower label/value widths */\n    .info-grid td:first-child,\n    .info-grid td:nth-child(3) {\n        font-weight: 600;\n        color: #005B4F;\n        width: 100px;\n    }\n\n    .info-grid td:nth-child(2),\n    .info-grid td:nth-child(4) {\n        color: #2F3A3A;\n        font-weight: 500;\n        width: 180px;\n    }\n\n    .transaction-summary {\n        margin-top: 10px;\n        border-radius: 8px;\n        overflow: hidden;\n        background: #F7FAF9;\n        border: 1px solid #e4efec;\n    }\n\n    .transaction-summary table {\n        width: 100%;\n        border-collapse: collapse;\n        font-size: 13px;\n    }\n\n    .transaction-summary th {\n        text-align: left;\n        background: #EAF3F0;\n        color: #005B4F;\n        padding: 8px 10px;\n        border-bottom: 1px solid #d6e5e0;\n    }\n\n    .transaction-summary td {\n        padding: 8px 10px;\n    }\n\n    .transaction-summary tr:nth-child(even) {\n        background: #ffffff;\n    }\n\n    .transaction-summary tr.total-row {\n        background: #E8F8F6;\n        font-weight: bold;\n    }\n\n    .footer {\n        text-align: right;\n        margin-top: 35px;\n        font-size: 12px;\n        color: #4a4a4a;\n    }\n\n    .footer-note {\n        text-align: center;\n        margin-top: 22px;\n        font-size: 11px;\n        color: #999;\n    }",
+  "custom_format": 1,
+  "default_print_language": "en-US",
+  "disabled": 0,
+  "doc_type": "Check Entry",
+  "docstatus": 0,
+  "doctype": "Print Format",
+  "font": null,
+  "font_size": 14,
+  "format_data": null,
+  "html": "{% set seller = frappe.db.get_value(\"User\", doc.owner, \"full_name\") %}\n{% set check_date = frappe.format_date(doc.posting_date) %}\n{% set cashed_on = frappe.format_date(doc.cashed_on) %}\n{% set ad = frappe.get_doc(\"Address\", doc.cost_center) %}\n\n\n\n\n<div class=\"check-entry-container\">\n\n    <!-- Header -->\n    <div class=\"check-entry-header\">\n        <img src=\"/files/logo_bancosecha_web.png\" alt=\"BANCOSECHA Logo\">\n        <!--<h2>{{ doc.company }}</h2>-->\n        <br>\n        {{ad.address_line1 or \"\"}} {{ad.city or \"\"}} {{ad.state or \"\"}} {{ad.pincode or \"\"}}<br>\n        {{frappe.db.get_value(\"Cost Center\", doc.cost_center, \"custom_license\")}}\n        <h4>Check Entry</h4>\n        <div style=\"font-size:11px; color:#888;\">Document ID: {{ doc.name }}</div>\n    </div>\n\n    <!-- Information Grid -->\n    <table class=\"info-grid\">\n        <tr>\n            <td>Customer:</td>\n            <td>{{ doc.customer }}</td>\n            <td>Check Issuer:</td>\n            <td>{{ doc.check_issuer or \"-\" }}</td>\n        </tr>\n        <tr>\n            <td>Check No.:</td>\n            <td>{{ doc.check_no }}</td>\n            <td>Cost Center:</td>\n            <td>{{ doc.cost_center }}</td>\n        </tr>\n        <tr>\n            <td>Posting Date:</td>\n            <td>{{ check_date }}</td>\n            <td>Cashed On:</td>\n            <td>{{ cashed_on or \"-\" }}</td>\n        </tr>\n    </table>\n\n    <!-- Transaction Summary -->\n    <div class=\"transaction-summary\">\n        <table>\n            <tr>\n                <th>Description</th>\n                <th style=\"text-align:right;\">Amount</th>\n            </tr>\n            <tr>\n                <td>Check Amount</td>\n                <td style=\"text-align:right;\">{{ doc.get_formatted('amount') }}</td>\n            </tr>\n            <tr>\n                <td>Service Fee</td>\n                <td style=\"text-align:right;\">{{ doc.get_formatted('fee') }}</td>\n            </tr>\n            <tr class=\"total-row\">\n                <td>Net Paid</td>\n                <td style=\"text-align:right;\">{{ frappe.format_value(doc.amount - doc.fee, \"Currency\") }}</td>\n            </tr>\n        </table>\n    </div>\n\n    <div class=\"footer\">\n        <div>Prepared By: <b>{{ seller }}</b></div>\n        <div>Date: {{ frappe.format_date(frappe.utils.nowdate()) }}</div>\n    </div>\n\n    <div class=\"footer-note\">\n        Powered by — <b>TZCode</b>\n    </div>\n\n</div>",
+  "line_breaks": 0,
+  "margin_bottom": 15.0,
+  "margin_left": 15.0,
+  "margin_right": 15.0,
+  "margin_top": 15.0,
+  "modified": "2026-01-08 14:37:50.020994",
+  "module": "Bancosecha",
+  "name": "Check Receipt Letter",
+  "page_number": "Hide",
+  "pdf_generator": "wkhtmltopdf",
+  "print_format_builder": 0,
+  "print_format_builder_beta": 0,
+  "print_format_for": "DocType",
+  "print_format_type": "Jinja",
+  "raw_commands": null,
+  "raw_printing": 0,
+  "report": null,
+  "show_section_headings": 0,
+  "standard": "Yes"
+ }
+]
