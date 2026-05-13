@@ -1,0 +1,394 @@
+{
+ "actions": [],
+ "allow_copy": 1,
+ "allow_rename": 1,
+ "autoname": "format:BCE-{YY}-{########}",
+ "creation": "2026-03-20 18:03:35.362413",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "main_details_section",
+  "check_issuer",
+  "customer",
+  "fee_percentage",
+  "column_break_vwtn",
+  "company",
+  "posting_date",
+  "cost_center",
+  "checks_section",
+  "checks",
+  "payments_section",
+  "_10000",
+  "_5000",
+  "column_break_kwcx",
+  "_2000",
+  "_1000",
+  "column_break_yakb",
+  "_500",
+  "_100",
+  "column_break_zxch",
+  "_050",
+  "_025",
+  "_010",
+  "column_break_pegq",
+  "_005",
+  "_001",
+  "totals_section",
+  "total_check",
+  "total_fee",
+  "column_break_ycwu",
+  "net_total",
+  "paid_amount",
+  "difference_amount",
+  "accounts_section",
+  "income_account",
+  "expense_account",
+  "column_break_ahpo",
+  "receivable_account",
+  "payment_account",
+  "mode_of_payment",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "main_details_section",
+   "fieldtype": "Section Break",
+   "label": "Main Details"
+  },
+  {
+   "fieldname": "check_issuer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Check Issuer",
+   "options": "Check Issuer"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "fee_percentage",
+   "fieldtype": "Percent",
+   "label": "Fee %"
+  },
+  {
+   "fieldname": "column_break_vwtn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "reqd": 1
+  },
+  {
+   "fieldname": "checks_section",
+   "fieldtype": "Section Break",
+   "label": "Checks"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "checks",
+   "fieldtype": "Table",
+   "options": "Bulk Check Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payments_section",
+   "fieldtype": "Section Break",
+   "label": "Payments"
+  },
+  {
+   "default": "0",
+   "fieldname": "_10000",
+   "fieldtype": "Int",
+   "label": "$100",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_5000",
+   "fieldtype": "Int",
+   "label": "$50",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_kwcx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_2000",
+   "fieldtype": "Int",
+   "label": "$20 ",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_1000",
+   "fieldtype": "Int",
+   "label": "$10",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_yakb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_500",
+   "fieldtype": "Int",
+   "label": "$5",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_100",
+   "fieldtype": "Int",
+   "label": "$1",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_zxch",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_050",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "$0.5",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_025",
+   "fieldtype": "Int",
+   "label": "$0.25",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_010",
+   "fieldtype": "Int",
+   "label": "$0.10",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_pegq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_005",
+   "fieldtype": "Int",
+   "label": "$0.05",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_001",
+   "fieldtype": "Int",
+   "label": "$0.01",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "total_check",
+   "fieldtype": "Currency",
+   "label": "Total Check",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_fee",
+   "fieldtype": "Currency",
+   "label": "Total Fee",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_ycwu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "net_total",
+   "fieldtype": "Currency",
+   "label": "Net Total",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "paid_amount",
+   "fieldtype": "Currency",
+   "label": "Paid Amount",
+   "non_negative": 1,
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "default": "0",
+   "fieldname": "difference_amount",
+   "fieldtype": "Currency",
+   "label": "Difference Amount",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "accounts_section",
+   "fieldtype": "Section Break",
+   "label": "Accounts"
+  },
+  {
+   "fieldname": "income_account",
+   "fieldtype": "Link",
+   "label": "Income Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expense_account",
+   "fieldtype": "Link",
+   "label": "Expense Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ahpo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receivable_account",
+   "fieldtype": "Link",
+   "label": "Receivable Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payment_account",
+   "fieldtype": "Link",
+   "label": "Payment Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "mode_of_payment",
+   "fieldtype": "Link",
+   "label": "Mode of Payment",
+   "options": "Mode of Payment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Bulk Check Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-24 14:16:54.448013",
+ "modified_by": "Administrator",
+ "module": "Bancosecha",
+ "name": "Bulk Check Entry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Cashier",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

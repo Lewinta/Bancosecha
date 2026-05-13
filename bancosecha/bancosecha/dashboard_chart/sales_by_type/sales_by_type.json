@@ -1,0 +1,35 @@
+{
+ "chart_name": "Sales By Type",
+ "chart_type": "Report",
+ "creation": "2026-03-16 13:04:53.634523",
+ "currency": "USD",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"company\":\"BANCOSECHA\",\"group_by\":\"Invoice Type\",\"from_date\":\"2026-03-01\",\"to_date\":\"2026-03-31\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2026-03-16 13:14:14.186977",
+ "modified_by": "Administrator",
+ "module": "Bancosecha",
+ "name": "Sales By Type",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Sales Summary",
+ "roles": [],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Pie",
+ "use_report_chart": 0,
+ "x_field": "group_value",
+ "y_axis": [
+  {
+   "color": "#29CD42",
+   "y_field": "total_amount"
+  }
+ ]
+}

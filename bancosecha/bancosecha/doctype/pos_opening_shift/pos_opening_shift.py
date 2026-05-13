@@ -37,6 +37,7 @@ class POSOpeningShift(StatusUpdater):
 			(OS.user == self.user) &
 			(OS.posting_date == self.posting_date) &
 			(OS.status == "Open") &
+			(OS.docstatus == 1) &
 			(OS.name != self.name)
 		).limit(1).run(as_dict=True)
 

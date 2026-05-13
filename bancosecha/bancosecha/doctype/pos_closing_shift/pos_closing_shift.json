@@ -26,22 +26,20 @@
   "section_break_if3m1",
   "payment_reconciliation_details",
   "denominations_section",
-  "_001",
-  "_500",
+  "_10000",
+  "_5000",
   "column_break_movm",
-  "_005",
+  "_2000",
   "_1000",
   "column_break_ofkg",
-  "_010",
-  "_2000",
+  "_500",
+  "_100",
   "column_break_yqfg",
   "_025",
-  "_5000",
+  "_010",
   "column_break_yhkw",
-  "_050",
-  "_10000",
-  "column_break_ynmo",
-  "_100",
+  "_005",
+  "_001",
   "section_break_11",
   "payment_reconciliation",
   "section_break_13",
@@ -58,7 +56,6 @@
    "fetch_from": "pos_opening_shift.period_start_date",
    "fieldname": "period_start_date",
    "fieldtype": "Datetime",
-   "in_list_view": 1,
    "label": "Period Start Date",
    "read_only": 1,
    "reqd": 1
@@ -67,7 +64,6 @@
    "default": "Today",
    "fieldname": "period_end_date",
    "fieldtype": "Datetime",
-   "in_list_view": 1,
    "label": "Period End Date",
    "read_only": 1,
    "reqd": 1
@@ -81,6 +77,7 @@
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Posting Date",
    "reqd": 1
   },
@@ -224,13 +221,13 @@
   {
    "fieldname": "_001",
    "fieldtype": "Int",
-   "label": "Penny",
+   "label": "$0.01",
    "non_negative": 1
   },
   {
    "fieldname": "_500",
    "fieldtype": "Int",
-   "label": "5 Dollar",
+   "label": "$5",
    "non_negative": 1
   },
   {
@@ -240,13 +237,13 @@
   {
    "fieldname": "_005",
    "fieldtype": "Int",
-   "label": "Nickel",
+   "label": "$0.05",
    "non_negative": 1
   },
   {
    "fieldname": "_1000",
    "fieldtype": "Int",
-   "label": "10 Dollar",
+   "label": "$10",
    "non_negative": 1
   },
   {
@@ -256,13 +253,13 @@
   {
    "fieldname": "_010",
    "fieldtype": "Int",
-   "label": "Dime",
+   "label": "$0.10",
    "non_negative": 1
   },
   {
    "fieldname": "_2000",
    "fieldtype": "Int",
-   "label": "20 Dollars",
+   "label": "$20",
    "non_negative": 1
   },
   {
@@ -272,13 +269,13 @@
   {
    "fieldname": "_025",
    "fieldtype": "Int",
-   "label": "Quarter",
+   "label": "$0.25",
    "non_negative": 1
   },
   {
    "fieldname": "_5000",
    "fieldtype": "Int",
-   "label": "50 Dollars",
+   "label": "$50",
    "non_negative": 1
   },
   {
@@ -286,25 +283,15 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "_050",
-   "fieldtype": "Int",
-   "label": "Half Dollar",
-   "non_negative": 1
-  },
-  {
    "fieldname": "_10000",
    "fieldtype": "Int",
-   "label": "100 Dollars",
+   "label": "$100",
    "non_negative": 1
-  },
-  {
-   "fieldname": "column_break_ynmo",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "_100",
    "fieldtype": "Int",
-   "label": "Dollar",
+   "label": "$1",
    "non_negative": 1
   },
   {
@@ -321,11 +308,11 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-28 23:42:08.984842",
+ "modified": "2026-03-24 14:16:02.784239",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "POS Closing Shift",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

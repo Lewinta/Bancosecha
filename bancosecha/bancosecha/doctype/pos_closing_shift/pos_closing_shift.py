@@ -55,6 +55,12 @@ class POSClosingShift(Document):
                 d.expected_amount, precision
             )
 
+    def on_cancel(self):
+        opening_entry = frappe.get_doc("POS Opening Shift", self.pos_opening_shift)
+        opening_entry.pos_closing_shift = None
+        opening_entry.status = 'Open'
+        opening_entry.db_update()
+
     def on_submit(self):
         opening_entry = frappe.get_doc("POS Opening Shift", self.pos_opening_shift)
         opening_entry.pos_closing_shift = self.name
@@ -92,28 +98,24 @@ class POSClosingShift(Document):
 @frappe.whitelist()
 def get_cashiers(doctype, txt, searchfield, start, page_len, filters):
     cashiers_list = frappe.get_all("POS Profile User", filters=filters, fields=["user"])
-    return [c["user"] for c in cashiers_list]
+    return [[c["user"]] for c in cashiers_list]
 
 
 @frappe.whitelist()
 def get_pos_invoices(pos_opening_shift):
     submit_printed_invoices(pos_opening_shift)
-    data = frappe.db.sql(
-        """
-	select
-		name
-	from
-		`tabSales Invoice`
-	where
-		docstatus = 1 and posa_pos_opening_shift = %s
-	""",
-        (pos_opening_shift),
-        as_dict=1,
-    )
+    data = frappe.db.sql("""
+        select name
+        from `tabSales Invoice`
+        where docstatus = 1 and posa_pos_opening_shift = %s
+    """, (pos_opening_shift), as_dict=1)
 
-    data = [frappe.get_doc("Sales Invoice", d.name).as_dict() for d in data]
-
-    return data
+    updated_data = []
+    for d in data:
+        doc = frappe.get_doc("Sales Invoice", d.name).as_dict()
+        doc.posa_paid_amount = get_paid_amount(d.name)
+        updated_data.append(doc)
+    return updated_data
 
 
 @frappe.whitelist()
@@ -161,7 +163,7 @@ def get_journal_entries(pos_opening_shift):
         (GL.voucher_type == "Journal Entry")&
         (GL.is_cancelled == 0)
 
-    ).groupby( GL.voucher_no ).run(as_dict=True, debug=True)
+    ).groupby( GL.voucher_no ).run(as_dict=True, debug=False)
 
 @frappe.whitelist()
 def make_closing_shift_from_opening(opening_shift):
@@ -179,7 +181,6 @@ def make_closing_shift_from_opening(opening_shift):
     closing_shift.total_quantity = 0
 
     invoices = get_pos_invoices(opening_shift.get("name"))
-
     pos_transactions = []
     taxes = []
     payments = []
@@ -188,133 +189,102 @@ def make_closing_shift_from_opening(opening_shift):
     pos_payments = get_payments_entries(opening_shift.get("name"))
     jv_entries = get_journal_entries(opening_shift.get("name"))
 
-    
     for detail in opening_shift.get("balance_details"):
         payments.append(
-            frappe._dict(
-                {
-                    "mode_of_payment": detail.get("mode_of_payment"),
-                    "opening_amount": detail.get("amount") or 0,
-                    "expected_amount": detail.get("amount") or 0,
-                }
-            )
+            frappe._dict({
+                "mode_of_payment": detail.get("mode_of_payment"),
+                "opening_amount": detail.get("amount") or 0,
+                "expected_amount": detail.get("amount") or 0,
+            })
         )
 
+    # invoice loop is NOT nested inside balance_details
     for d in invoices:
         pos_transactions.append(
-            frappe._dict(
-                {
-                    "sales_invoice": d.name,
-                    "posting_date": d.posting_date,
-                    "grand_total": d.grand_total,
-                    "customer": d.customer,
-                }
-            )
+            frappe._dict({
+                "sales_invoice": d.name,
+                "posting_date": d.posting_date,
+                "grand_total": d.grand_total,
+                "customer": d.customer,
+                "custom_invoice_type": d.custom_invoice_type,
+                "custom_supplier": d.custom_supplier,
+                "paid_amount": d.get("posa_paid_amount") or 0,
+            })
         )
         closing_shift.grand_total += flt(d.grand_total)
         closing_shift.net_total += flt(d.net_total)
         closing_shift.total_quantity += flt(d.total_qty)
 
         for t in d.taxes:
-            existing_tax = [
-                tx
-                for tx in taxes
-                if tx.account_head == t.account_head and tx.rate == t.rate
-            ]
+            existing_tax = [tx for tx in taxes if tx.account_head == t.account_head and tx.rate == t.rate]
             if existing_tax:
                 existing_tax[0].amount += flt(t.tax_amount)
             else:
-                taxes.append(
-                    frappe._dict(
-                        {
-                            "account_head": t.account_head,
-                            "rate": t.rate,
-                            "amount": t.tax_amount,
-                        }
-                    )
-                )
+                taxes.append(frappe._dict({
+                    "account_head": t.account_head,
+                    "rate": t.rate,
+                    "amount": t.tax_amount,
+                }))
+
+        cash_mode_of_payment = frappe.get_value(
+            "POS Profile", opening_shift.get("pos_profile"), "posa_cash_mode_of_payment"
+        ) or "Cash"
 
         for p in d.payments:
-            existing_pay = [
-                pay for pay in payments if pay.mode_of_payment == p.mode_of_payment
-            ]
+            existing_pay = [pay for pay in payments if pay.mode_of_payment == p.mode_of_payment]
             if existing_pay:
-                cash_mode_of_payment = frappe.get_value(
-                    "POS Profile",
-                    opening_shift.get("pos_profile"),
-                    "posa_cash_mode_of_payment",
-                )
-                if not cash_mode_of_payment:
-                    cash_mode_of_payment = "Cash"
-                if existing_pay[0].mode_of_payment == cash_mode_of_payment:
-                    amount = p.amount - d.change_amount
-                else:
-                    amount = p.amount
+                amount = (p.base_amount - d.change_amount) if existing_pay[0].mode_of_payment == cash_mode_of_payment else p.base_amount
                 existing_pay[0].expected_amount += flt(amount)
             else:
-                payments.append(
-                    frappe._dict(
-                        {
-                            "mode_of_payment": p.mode_of_payment,
-                            "opening_amount": 0,
-                            "expected_amount": p.amount,
-                        }
-                    )
-                )
+                payments.append(frappe._dict({
+                    "mode_of_payment": p.mode_of_payment,
+                    "opening_amount": 0,
+                    "expected_amount": p.base_amount,
+                }))
 
     for py in pos_payments:
-        pos_payments_table.append(
-            frappe._dict(
-                {
-                    "payment_entry": py.name,
-                    "mode_of_payment": py.mode_of_payment,
-                    "paid_amount": py.paid_amount,
-                    "posting_date": py.posting_date,
-                    "customer": py.party,
-                }
-            )
-        )
-        existing_pay = [
-            pay for pay in payments if pay.mode_of_payment == py.mode_of_payment
-        ]
+        pos_payments_table.append(frappe._dict({
+            "payment_entry": py.name,
+            "mode_of_payment": py.mode_of_payment,
+            "paid_amount": py.paid_amount,
+            "posting_date": py.posting_date,
+            "customer": py.party,
+        }))
+        existing_pay = [pay for pay in payments if pay.mode_of_payment == py.mode_of_payment]
         if existing_pay:
             existing_pay[0].expected_amount += flt(py.paid_amount)
         else:
-            payments.append(
-                frappe._dict(
-                    {
-                        "mode_of_payment": py.mode_of_payment,
-                        "opening_amount": 0,
-                        "expected_amount": py.paid_amount,
-                    }
-                )
-            )
+            payments.append(frappe._dict({
+                "mode_of_payment": py.mode_of_payment,
+                "opening_amount": 0,
+                "expected_amount": py.paid_amount,
+            }))
 
     for jv in jv_entries:
-        existing_pay = [
-            pay for pay in payments if pay.mode_of_payment == jv.mode_of_payment
-        ]
+        existing_pay = [pay for pay in payments if pay.mode_of_payment == jv.mode_of_payment]
         if existing_pay:
             existing_pay[0].expected_amount += flt(jv.amount)
         else:
-            payments.append(
-                frappe._dict(
-                    {
-                        "mode_of_payment": jv.mode_of_payment,
-                        "opening_amount": 0,
-                        "expected_amount": jv.amount,
-                    }
-                )
-            )
+            payments.append(frappe._dict({
+                "mode_of_payment": jv.mode_of_payment,
+                "opening_amount": 0,
+                "expected_amount": jv.amount,
+            }))
+
+    for i in pos_transactions:
+        closing_shift.append("pos_transactions", i)
+    for i in payments:
+        closing_shift.append("payment_reconciliation", i)
+    for i in taxes:
+        closing_shift.append("taxes", i)
+    for i in pos_payments_table:
+        closing_shift.append("pos_payments", i)
+    for i in jv_entries:
+        closing_shift.append("pos_journal_entries", i)
+    for i in closing_shift.payment_reconciliation:
+        i.closing_amount = 1
     
-    closing_shift.set("pos_transactions", pos_transactions)
-    closing_shift.set("payment_reconciliation", payments)
-    closing_shift.set("taxes", taxes)
-    closing_shift.set("pos_payments", pos_payments_table)
-    closing_shift.set("pos_journal_entries", jv_entries)
-
-    return closing_shift
-
+    return closing_shift.name
 
 @frappe.whitelist()
 def submit_closing_shift(closing_shift):
@@ -338,3 +308,117 @@ def submit_printed_invoices(pos_opening_shift):
     for invoice in invoices_list:
         invoice_doc = frappe.get_doc("Sales Invoice", invoice.name)
         invoice_doc.submit()
+
+
+def get_paid_amount(sales_invoice):
+    data = frappe.db.sql("""
+        select 
+            paid_amount 
+        from  
+            `viewInvoice Cash Payments` 
+        where 
+            sales_invoice = %s;
+    """, sales_invoice, as_dict=1)
+    
+    return data[0].paid_amount if data else 0
+
+
+def build_expected_amount_ledger(pos_opening_shift):
+    """
+    Retorna todas las transacciones que componen el expected_amount.
+    ESTA es la única fuente de verdad.
+    """
+
+    opening = frappe.get_doc("POS Opening Shift", pos_opening_shift)
+
+    ledger = []
+
+    # ---------------------------------------
+    # 1. Opening Balance
+    # ---------------------------------------
+    for d in opening.balance_details:
+        ledger.append({
+            "type": "Opening",
+            "reference": "",
+            "posting_date": opening.period_start_date,
+            "mode_of_payment": d.mode_of_payment,
+            "amount": d.amount or 0
+        })
+
+    # ---------------------------------------
+    # 2. Sales Invoices
+    # ---------------------------------------
+    invoices = get_pos_invoices(pos_opening_shift)
+
+    cash_mop = frappe.get_value(
+        "POS Profile",
+        opening.pos_profile,
+        "posa_cash_mode_of_payment"
+    ) or "Cash"
+
+    for inv in invoices:
+        sinv = frappe.get_doc("Sales Invoice", inv.name)
+
+        for p in sinv.payments:
+            base_amount = p.base_amount
+
+            if p.mode_of_payment == cash_mop:
+                net = base_amount - sinv.change_amount
+
+                # pago real
+                ledger.append({
+                    "type": "Invoice Payment",
+                    "reference": sinv.name,
+                    "posting_date": sinv.posting_date,
+                    "mode_of_payment": p.mode_of_payment,
+                    "amount": net
+                })
+
+                # # cambio
+                # if sinv.change_amount:
+                #     ledger.append({
+                #         "type": "Change",
+                #         "reference": sinv.name,
+                #         "posting_date": sinv.posting_date,
+                #         "mode_of_payment": p.mode_of_payment,
+                #         "amount": -sinv.change_amount
+                #     })
+
+            else:
+                ledger.append({
+                    "type": "Invoice Payment",
+                    "reference": sinv.name,
+                    "posting_date": sinv.posting_date,
+                    "mode_of_payment": p.mode_of_payment,
+                    "amount": base_amount
+                })
+
+    # ---------------------------------------
+    # 3. Payment Entries
+    # ---------------------------------------
+    payments = get_payments_entries(pos_opening_shift)
+
+    for pe in payments:
+        ledger.append({
+            "type": "Payment Entry",
+            "reference": pe.name,
+            "posting_date": pe.posting_date,
+            "mode_of_payment": pe.mode_of_payment,
+            "amount": pe.paid_amount
+        })
+
+    # ---------------------------------------
+    # 4. Journal Entries
+    # ---------------------------------------
+    jvs = get_journal_entries(pos_opening_shift)
+
+    for jv in jvs:
+        ledger.append({
+            "type": "Journal Entry",
+            "reference": jv.journal_entry,
+            "posting_date": jv.posting_date,
+            "mode_of_payment": jv.mode_of_payment,
+            "amount": jv.amount
+        })
+
+    return ledger

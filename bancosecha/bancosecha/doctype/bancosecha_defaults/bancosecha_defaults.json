@@ -19,7 +19,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Invoice Type",
-   "options": "\nMoney Order\nMoney Transfer\nBill Payment\nShipping & Delivery\nShipping Box\nBusiness Services",
+   "options": "\nMoney Order\nMoney Transfer\nBill Payment\nPhone Replenishment\nShipping & Delivery\nShipping Box\nBusiness Services",
    "reqd": 1
   },
   {
@@ -55,7 +55,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-19 11:19:37.293141",
+ "modified": "2026-03-15 16:59:43.186926",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "Bancosecha Defaults",

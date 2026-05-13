@@ -70,6 +70,10 @@ frappe.listview_settings["Sales Invoice"] = {
                     bg: "#f3e5f5",
                     color: "#6a1b9a"
                 },
+                "Phone Replenishment": { 
+                    bg: "#fff3e0",
+                    color: "#e65100" 
+                },
                 "Business Services": {
                     bg: "#e8f5e9",
                     color: "#1b5e20"

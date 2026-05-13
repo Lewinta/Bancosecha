@@ -132,7 +132,8 @@ frappe.ui.form.on('POS Opening Shift', {
 					opening_shift: frm.doc 
 				};
 				const callback = ({ message }) => {
-					frappe.new_doc("POS Closing Shift", message);
+					frappe.set_route("Form", "POS Closing Shift", message);
+					// frappe.new_doc("POS Closing Shift", message);
 				}
 				frappe.call({ method, args, callback });
 			}).addClass("btn-primary");

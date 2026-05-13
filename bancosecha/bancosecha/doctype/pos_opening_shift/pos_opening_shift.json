@@ -19,22 +19,21 @@
   "column_break_7",
   "user",
   "section_break_xxox",
-  "_001",
-  "_500",
+  "_10000",
+  "_5000",
   "column_break_hsvv",
-  "_005",
+  "_2000",
   "_1000",
   "column_break_zrfp",
-  "_010",
-  "_2000",
+  "_500",
+  "_100",
   "column_break_rjju",
   "_025",
-  "_5000",
+  "_010",
   "column_break_nkvv",
   "_050",
-  "_10000",
-  "column_break_xtez",
-  "_100",
+  "_005",
+  "_001",
   "opening_balance_details_section",
   "balance_details",
   "section_break_9",
@@ -152,13 +151,13 @@
   {
    "fieldname": "_001",
    "fieldtype": "Int",
-   "label": "Penny",
+   "label": "$0.01",
    "non_negative": 1
   },
   {
    "fieldname": "_500",
    "fieldtype": "Int",
-   "label": "5 Dollar",
+   "label": "$5 Dollar",
    "non_negative": 1
   },
   {
@@ -168,13 +167,13 @@
   {
    "fieldname": "_005",
    "fieldtype": "Int",
-   "label": "Nickel",
+   "label": "$0.05",
    "non_negative": 1
   },
   {
    "fieldname": "_1000",
    "fieldtype": "Int",
-   "label": "10 Dollar",
+   "label": "$10 Dollar",
    "non_negative": 1
   },
   {
@@ -184,13 +183,13 @@
   {
    "fieldname": "_010",
    "fieldtype": "Int",
-   "label": "Dime",
+   "label": "$0.10",
    "non_negative": 1
   },
   {
    "fieldname": "_2000",
    "fieldtype": "Int",
-   "label": "20 Dollars",
+   "label": "$20 Dollars",
    "non_negative": 1
   },
   {
@@ -200,13 +199,13 @@
   {
    "fieldname": "_025",
    "fieldtype": "Int",
-   "label": "Quarter",
+   "label": "$0.25 ",
    "non_negative": 1
   },
   {
    "fieldname": "_5000",
    "fieldtype": "Int",
-   "label": "50 Dollar",
+   "label": "$50 Dollar",
    "non_negative": 1
   },
   {
@@ -216,33 +215,30 @@
   {
    "fieldname": "_050",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Half Dollar",
    "non_negative": 1
   },
   {
    "fieldname": "_10000",
    "fieldtype": "Int",
-   "label": "100 Dollar",
+   "label": "$100 Dollar",
    "non_negative": 1
-  },
-  {
-   "fieldname": "column_break_xtez",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "_100",
    "fieldtype": "Int",
-   "label": "Dollar",
+   "label": "$1 Dollar",
    "non_negative": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-28 22:05:41.595796",
+ "modified": "2026-03-24 14:10:27.145453",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "POS Opening Shift",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

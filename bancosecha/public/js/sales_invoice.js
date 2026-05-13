@@ -18,115 +18,6 @@ frappe.ui.form.on("Sales Invoice", {
         setTimeout(() => {
             frm.trigger("set_default_shift");
         }, 3000);
-
-        frm.page.set_primary_action(__("Submit"), async () => {
-            await frm.trigger("validate_before_submit");
-        });
-    },
-
-    async validate_before_submit(frm) {
-        if (frm.doc.docstatus !== 0) return;
-
-        const allowed_types = [
-            "Money Order",
-            "Money Transfer",
-            "Bill Payment",
-            "Shipping & Delivery"
-        ];
-
-        if (!allowed_types.includes(frm.doc.custom_invoice_type)) {
-            await frm.savesubmit();
-            return;
-        }
-
-        const default_item = get_default_item(frm.doc.custom_invoice_type);
-
-        await new Promise((resolve, reject) => {
-            const dialog = new frappe.ui.Dialog({
-                title: __("Additional Information Required"),
-                size: "large",
-                static: true,
-                fields: [
-                    {
-                        fieldname: "item_code",
-                        label: __("Item"),
-                        fieldtype: "Link",
-                        options: "Item",
-                        reqd: 1,
-                        default: default_item || null
-                    },
-                    { fieldtype: "Column Break" },
-                    {
-                        fieldname: "amount",
-                        label: __("Amount"),
-                        fieldtype: "Currency",
-                        reqd: 1
-                    }
-                ],
-                primary_action_label: __("Continue"),
-                primary_action: async (values) => {
-                    if (!values.item_code || !values.amount) return;
-
-                    if (values.amount <= 0) {
-                        frappe.msgprint(__("Amount must be greater than zero."));
-                        return;
-                    }
-
-                    if (values.amount >= frm.doc.total) {
-                        frappe.msgprint(__("Amount must be less than the invoice total."));
-                        return;
-                    }
-
-                    dialog.get_primary_btn().prop("disabled", true);
-
-                    try {
-                        const r = await frappe.call({
-                            method: "bancosecha.bancosecha.controllers.sales_invoice.create_po_and_submit_invoice",
-                            args: {
-                                invoice_name: frm.doc.name,
-                                supplier: frm.doc.custom_supplier,
-                                cost_center: frm.doc.cost_center,
-                                item_code: values.item_code,
-                                amount: values.amount
-                            },
-                            freeze: true,
-                            freeze_message: __("Creating PO & Submitting Invoice...")
-                        });
-
-                        if (!r.message?.submitted && !r.message?.already_done) {
-                            dialog.get_primary_btn().prop("disabled", false);
-                            frappe.msgprint(__("Process failed."));
-                            return;
-                        }
-
-                        dialog.hide();
-                        await frm.reload_doc();
-                        resolve();
-                    } catch (e) {
-                        dialog.get_primary_btn().prop("disabled", false);
-                        frappe.msgprint(__("An error occurred while processing."));
-                        console.error(e);
-                        reject(e);
-                    }
-                }
-            });
-
-            dialog.set_secondary_action_label(__("Cancel"));
-            dialog.set_secondary_action(() => {
-                dialog.hide();
-                frm.reload_doc();
-                reject();
-            });
-
-            dialog.$wrapper.find(".modal").attr({
-                "data-bs-keyboard": "false",
-                "data-bs-backdrop": "static"
-            });
-
-            dialog.$wrapper.find(".modal-dialog").css("max-width", "800px");
-
-            dialog.show();
-        });
     },
 
     set_queries(frm) {
@@ -135,6 +26,7 @@ frappe.ui.form.on("Sales Invoice", {
                 "Money Order": "Money Transfers",
                 "Money Transfer": "Money Transfers",
                 "Bill Payment": "Money Transfers",
+                "Phone Replenishment": "Phone Replenishment",
                 "Shipping & Delivery": "Shipping Services",
                 "Business Services": "Business Services"
             };
@@ -170,16 +62,18 @@ frappe.ui.form.on("Sales Invoice", {
         if (item_code) {
             const row = frm.add_child("items", {
                 item_code,
-                qty: 1,
+                qty: frm.doc.is_return ? -1 : 1,
                 rate: 0
             });
             frm.script_manager.trigger("item_code", row.doctype, row.name);
-            service_item  = frm.add_child("items", {
-                item_code: "Service Charge",
-                qty: 1,
-                rate: 0
-            });
-            frm.script_manager.trigger("item_code", service_item.doctype, service_item.name);
+            if (frm.doc.custom_invoice_type != "Phone Replenishment") {
+                const service_item  = frm.add_child("items", {
+                    item_code: "Service Charge",
+                    qty: frm.doc.is_return ? -1 : 1,
+                    rate: 0
+                });
+                frm.script_manager.trigger("item_code", service_item.doctype, service_item.name);
+            }
         }
 
         if (!frm.doc.items?.length) {
@@ -189,6 +83,17 @@ frappe.ui.form.on("Sales Invoice", {
         frm.refresh_field("items");
         frm.set_value("taxes_and_charges", sales_tax_template || null);
         frm.trigger("set_queries");
+        frm.trigger("is_return");
+    },
+    is_return(frm) {
+        if(!!frm.doc.is_return){
+            frm.set_value("taxes_and_charges", "");
+            frm.clear_table("taxes");
+        }
+
+        $.map(frm.doc.items || [], (item) => {
+            frappe.model.set_value(item.doctype, item.name, "qty", frm.doc.is_return ? -Math.abs(item.qty) : Math.abs(item.qty));
+        });
     },
     custom__001(frm) {
         frm.trigger("update_paid_amount_from_denominations");

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html> 
+    <style>
+
+.check-history-wrapper {
+    padding: 20px;
+}
+
+.history-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.history-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.card-title {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.modern-table th {
+    font-weight: 600;
+}
+
+.badge-success {
+    background: #28a745;
+    color:white;
+    padding:4px 8px;
+    border-radius:6px;
+}
+
+.badge-danger {
+    background: #dc3545;
+    color:white;
+    padding:4px 8px;
+    border-radius:6px;
+}
+
+.summary-bar {
+    font-size: 12px;
+    color: #6c7680;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.summary-item {
+    white-space: nowrap;
+}
+
+.summary-green {
+    color: #21a366;
+    font-weight: 600;
+}
+
+.summary-red {
+    color: #d9534f;
+    font-weight: 600;
+}
+
+.summary-orange {
+    color: #f0ad4e;
+    font-weight: 600;
+}
+
+.summary-total {
+    color: #6c7680;
+    font-weight: bold;
+}
+
+/* risk badge */
+
+.risk-low {
+    color: #21a366;
+    font-weight: 600;
+}
+
+.risk-medium {
+    color: #f0ad4e;
+    font-weight: 600;
+}
+
+.risk-high {
+    color: #d9534f;
+    font-weight: 600;
+}
+
+.table-scroll {
+    max-height: 320px;
+    overflow-y: auto;
+    border-radius: 6px;
+}
+
+.table-scroll table {
+    margin-bottom: 0;
+}
+
+/* sticky header */
+
+.table-scroll thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+    box-shadow: 0 1px 0 #e5e5e5;
+}
+
+
+
+
+</style>
+
+
+<div class="check-history-wrapper">
+
+    <div class="history-grid">
+
+        <!-- LEFT -->
+        <div class="history-card">
+            <div class="card-title"> Check Issuer </div>
+            <div class="summary-bar">
+                <div class="summary-item summary-total"> Total: {{ issuer_summary.total_checks }} </div>
+                <div class="summary-item summary-red"> Returned: {{ issuer_summary.returned }} </div>
+                <div class="summary-item {{ issuer_summary.risk_color }}"> Return Rate: {{ issuer_summary.return_rate }}% </div>
+                <div class="summary-item summary-total">
+                    Amount:
+                    {{ frappe.format_value(issuer_summary.total_amount, {"fieldtype":"Currency"}) }}
+                </div>
+            </div>
+
+
+            <div class="table-scroll">
+                <table class="table modern-table">
+
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for c in issuer_checks %}
+
+                        <tr>
+                            <td>{{ frappe.format_value(c.posting_date, {"fieldtype": "Date"}) }}</td>
+                            <td>{{ c.customer }}</td>
+                            <td>{{ frappe.format_value(c.amount, {"fieldtype": "Currency"}) }}</td>
+
+                            <td>
+                                {% if c.workflow_state in ["Approved","Cashed"] %}
+                                    <span class="badge-success">{{ c.workflow_state }}</span>
+                                {% else %}
+                                    <span class="badge-danger">{{ c.workflow_state }}</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+        <!-- RIGHT -->
+        <div class="history-card">
+            <div class="card-title">Customer</div>
+
+            <div class="summary-bar">
+                <div class="summary-item summary-total"> Total: {{ customer_summary.total_checks }} </div>
+                <div class="summary-item summary-red"> Returned: {{ customer_summary.returned }} </div>
+                <div class="summary-item {{ customer_summary.risk_color }}"> Return Rate: {{ customer_summary.return_rate }}% </div>
+                <div class="summary-item summary-total"> Amount:
+                    {{ frappe.format_value(customer_summary.total_amount, {"fieldtype":"Currency"}) }}
+                </div>
+
+            </div>
+
+            <div class="table-scroll">
+                <table class="table modern-table">
+
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Check Issuer</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for c in customer_checks %}
+
+                        <tr>
+                            <td>{{ frappe.format_value(c.posting_date, {"fieldtype": "Date"}) }}</td>
+                            <td>{{ c.check_issuer }}</td>
+                            <td>{{ frappe.format_value(c.amount, {"fieldtype": "Currency"}) }}</td>
+
+                            <td>
+                                {% if c.workflow_state in ["Approved","Cashed"] %}
+                                    <span class="badge-success">{{ c.workflow_state }}</span>
+                                {% else %}
+                                    <span class="badge-danger">{{ c.workflow_state }}</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</html>

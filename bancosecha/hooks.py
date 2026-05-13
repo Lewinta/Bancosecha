@@ -30,7 +30,9 @@ app_include_js = [
 
 # include js in doctype views
 doctype_js = {
-    "Sales Invoice" : "public/js/sales_invoice.js"
+    "Sales Invoice" : "public/js/sales_invoice.js",
+    "Customer" : "public/js/customer.js",
+    "Payment Entry" : "public/js/payment_entry.js",
 }
 doctype_list_js = {
     "Sales Invoice" : "public/js/sales_invoice_list.js"
@@ -55,7 +57,7 @@ doctype_list_js = {
 fixtures = [
     {
         "dt": "Custom DocPerm",
-        "filters": { }
+        "filters": [["docstatus", "=", 0]]
     },
     {
         "dt": "Custom Field",
@@ -185,7 +187,15 @@ doc_events = {
 	"Sales Invoice": {
 		"validate": "bancosecha.bancosecha.controllers.sales_invoice.validate",
 		"before_submit": "bancosecha.bancosecha.controllers.sales_invoice.before_submit",
-	}
+		"on_cancel": "bancosecha.bancosecha.controllers.sales_invoice.on_cancel",
+		"on_trash": "bancosecha.bancosecha.controllers.sales_invoice.on_trash",
+	},
+    "Customer": {
+        "validate": "bancosecha.bancosecha.controllers.customer.validate"
+    },
+    "POS Profile": {
+        "validate": "bancosecha.bancosecha.controllers.pos_profile.validate"
+    }
 }
 
 # Scheduled Tasks
@@ -277,5 +287,5 @@ doc_events = {
 # auth_hooks = [
 # 	"bancosecha.auth.validate"
 # ]
-
+on_session_creation = "bancosecha.api.set_user_defaults_from_pos_profile"
 extend_bootinfo = "bancosecha.boot.boot_session"

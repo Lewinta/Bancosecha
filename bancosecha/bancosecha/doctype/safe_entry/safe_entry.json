@@ -1,0 +1,326 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "SE.########",
+ "creation": "2026-03-14 19:11:09.721690",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_mymt",
+  "type",
+  "company",
+  "cost_center",
+  "column_break_vakn",
+  "posting_date",
+  "posting_time",
+  "set_posting_time",
+  "accounts_section",
+  "safe_account",
+  "column_break_bxca",
+  "cash_account",
+  "payments_section",
+  "_10000",
+  "_5000",
+  "column_break_oflh",
+  "_2000",
+  "_1000",
+  "column_break_uzoa",
+  "_500",
+  "_100",
+  "column_break_kgjx",
+  "_050",
+  "_025",
+  "_010",
+  "column_break_nrxw",
+  "_005",
+  "_001",
+  "totals_section",
+  "amended_from",
+  "column_break_dykq",
+  "total_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_mymt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Safe Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Type",
+   "options": "\nWithdrawal\nDeposit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_vakn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Posting Date"
+  },
+  {
+   "default": "Now",
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Posting Time"
+  },
+  {
+   "default": "0",
+   "fieldname": "set_posting_time",
+   "fieldtype": "Check",
+   "label": "Set Posting Time"
+  },
+  {
+   "fieldname": "payments_section",
+   "fieldtype": "Section Break",
+   "label": "Payments"
+  },
+  {
+   "default": "0",
+   "fieldname": "_10000",
+   "fieldtype": "Int",
+   "label": "$100",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_5000",
+   "fieldtype": "Int",
+   "label": "$50",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_oflh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_2000",
+   "fieldtype": "Int",
+   "label": "$20",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_1000",
+   "fieldtype": "Int",
+   "label": "$10",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_uzoa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_500",
+   "fieldtype": "Int",
+   "label": "$5",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_100",
+   "fieldtype": "Int",
+   "label": "$1",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_kgjx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_050",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "$0.5",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_025",
+   "fieldtype": "Int",
+   "label": "$0.25",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_nrxw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "_010",
+   "fieldtype": "Int",
+   "label": "$0.10",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_005",
+   "fieldtype": "Int",
+   "label": "$0.05",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "_001",
+   "fieldtype": "Int",
+   "label": "$0.01",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "column_break_dykq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Total Amount",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:!doc.safe_account || !doc.cash_account",
+   "fieldname": "accounts_section",
+   "fieldtype": "Section Break",
+   "label": "Accounts"
+  },
+  {
+   "fetch_from": "cost_center.custom_safe_account",
+   "fieldname": "safe_account",
+   "fieldtype": "Link",
+   "label": "Safe Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_bxca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cash_account",
+   "fieldtype": "Link",
+   "label": "Cash Account",
+   "options": "Account",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "group": "Journal Entry",
+   "link_doctype": "Journal Entry",
+   "link_fieldname": "custom_safe_entry"
+  }
+ ],
+ "modified": "2026-03-24 14:22:12.963381",
+ "modified_by": "Administrator",
+ "module": "Bancosecha",
+ "name": "Safe Entry",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CEO",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Cashier",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "cash_account"
+}
