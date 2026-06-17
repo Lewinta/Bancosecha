@@ -17,7 +17,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Reports",
-   "link_count": 3,
+   "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -51,9 +51,19 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Safe Denomination Summary",
+   "link_count": 0,
+   "link_to": "Safe Denomination Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-05-13 01:17:35.586075",
+ "modified": "2026-05-15 10:17:52.728327",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "Bancosecha",

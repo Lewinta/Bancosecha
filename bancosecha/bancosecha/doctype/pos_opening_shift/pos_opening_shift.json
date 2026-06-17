@@ -157,7 +157,7 @@
   {
    "fieldname": "_500",
    "fieldtype": "Int",
-   "label": "$5 Dollar",
+   "label": "$5",
    "non_negative": 1
   },
   {
@@ -173,7 +173,7 @@
   {
    "fieldname": "_1000",
    "fieldtype": "Int",
-   "label": "$10 Dollar",
+   "label": "$10",
    "non_negative": 1
   },
   {
@@ -189,7 +189,7 @@
   {
    "fieldname": "_2000",
    "fieldtype": "Int",
-   "label": "$20 Dollars",
+   "label": "$20",
    "non_negative": 1
   },
   {
@@ -199,13 +199,13 @@
   {
    "fieldname": "_025",
    "fieldtype": "Int",
-   "label": "$0.25 ",
+   "label": "$0.25",
    "non_negative": 1
   },
   {
    "fieldname": "_5000",
    "fieldtype": "Int",
-   "label": "$50 Dollar",
+   "label": "$50",
    "non_negative": 1
   },
   {
@@ -216,19 +216,19 @@
    "fieldname": "_050",
    "fieldtype": "Int",
    "hidden": 1,
-   "label": "Half Dollar",
+   "label": "$0.50",
    "non_negative": 1
   },
   {
    "fieldname": "_10000",
    "fieldtype": "Int",
-   "label": "$100 Dollar",
+   "label": "$100",
    "non_negative": 1
   },
   {
    "fieldname": "_100",
    "fieldtype": "Int",
-   "label": "$1 Dollar",
+   "label": "$1",
    "non_negative": 1
   }
  ],

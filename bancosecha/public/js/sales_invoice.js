@@ -12,9 +12,26 @@ const DENOMINATIONS = {
     custom__001: 1        // $0.01
 };
 
+const PO_ELIGIBLE_INVOICE_TYPES = [
+    "Money Order",
+    "Money Transfer",
+    "Bill Payment",
+    "Shipping & Delivery",
+];
+
+const SUPPLIER_GROUP_BY_INVOICE_TYPE = {
+    "Money Order": "Money Transfers",
+    "Money Transfer": "Money Transfers",
+    "Bill Payment": "Money Transfers",
+    "Phone Replenishment": "Phone Replenishment",
+    "Shipping & Delivery": "Shipping Services",
+    "Business Services": "Business Services"
+};
+
 frappe.ui.form.on("Sales Invoice", {
     refresh(frm) {
         frm.trigger("set_queries");
+        add_change_supplier_button(frm);
         setTimeout(() => {
             frm.trigger("set_default_shift");
         }, 3000);
@@ -22,16 +39,7 @@ frappe.ui.form.on("Sales Invoice", {
 
     set_queries(frm) {
         frm.set_query("custom_supplier", () => {
-            const map = {
-                "Money Order": "Money Transfers",
-                "Money Transfer": "Money Transfers",
-                "Bill Payment": "Money Transfers",
-                "Phone Replenishment": "Phone Replenishment",
-                "Shipping & Delivery": "Shipping Services",
-                "Business Services": "Business Services"
-            };
-
-            const supplier_group = map[frm.doc.custom_invoice_type];
+            const supplier_group = SUPPLIER_GROUP_BY_INVOICE_TYPE[frm.doc.custom_invoice_type];
             return supplier_group ? { filters: { supplier_group } } : {};
         });
     },
@@ -185,4 +193,73 @@ function get_default_supplier(invoice_type) {
 function get_default_sales_tax_template(invoice_type) {
     const defaults = frappe.boot.bancosecha?.defaults || {};
     return defaults[invoice_type]?.default_sales_tax_template || null;
+}
+
+function add_change_supplier_button(frm) {
+    if (frm.is_new() || frm.doc.docstatus !== 1) return;
+    if (!frm.doc.custom_po_reference) return;
+    if (!PO_ELIGIBLE_INVOICE_TYPES.includes(frm.doc.custom_invoice_type)) return;
+
+    frm.add_custom_button(__("Change Supplier"), () => {
+        const dialog = new frappe.ui.Dialog({
+            title: __("Change Purchase Order Supplier"),
+            fields: [
+                {
+                    fieldtype: "HTML",
+                    options: `<div class="text-muted small" style="margin-bottom:8px;">${
+                        __("Current PO: {0}", [frappe.utils.escape_html(frm.doc.custom_po_reference)])
+                    } &middot; ${
+                        __("Current Supplier: {0}", [frappe.utils.escape_html(frm.doc.custom_supplier || "")])
+                    }</div>`,
+                },
+                {
+                    fieldtype: "Link",
+                    fieldname: "new_supplier",
+                    label: __("New Supplier"),
+                    options: "Supplier",
+                    reqd: 1,
+
+                },
+                {
+                    fieldtype: "HTML",
+                    options: `<div class="text-muted small">${
+                        __("The current Purchase Order will be cancelled and a new one will be created with the selected supplier.")
+                    }</div>`,
+                },
+            ],
+            primary_action_label: __("Apply"),
+            primary_action(values) {
+                if (values.new_supplier === frm.doc.custom_supplier) {
+                    frappe.msgprint(__("The selected supplier is the same as the current one."));
+                    return;
+                }
+                frappe.confirm(
+                    __("Cancel PO {0} and create a new one for supplier {1}?",
+                        [frm.doc.custom_po_reference, values.new_supplier]),
+                    () => {
+                        frappe.call({
+                            method: "bancosecha.bancosecha.controllers.sales_invoice.change_supplier",
+                            args: {
+                                invoice_name: frm.doc.name,
+                                new_supplier: values.new_supplier,
+                            },
+                            freeze: true,
+                            freeze_message: __("Updating supplier..."),
+                            callback: (r) => {
+                                if (r.message) {
+                                    frappe.show_alert({
+                                        message: __("Supplier updated. New PO: {0}", [r.message.new_po]),
+                                        indicator: "green",
+                                    }, 7);
+                                    dialog.hide();
+                                    frm.reload_doc();
+                                }
+                            },
+                        });
+                    }
+                );
+            },
+        });
+        dialog.show();
+    }, __("Actions"));
 }

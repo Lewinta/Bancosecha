@@ -101,13 +101,6 @@ fixtures = [
         "dt": "Workflow State",
         "filters": {}
     },
-    {
-        "dt": "Workflow Action",
-        "filters": {}
-    },
-    
-    
-
 ]
 
 # Generators
@@ -226,10 +219,10 @@ doc_events = {
 
 # Overriding Methods
 # ------------------------------
-#
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "bancosecha.event.get_events"
-# }
+override_whitelisted_methods = {
+    "erpnext.accounts.doctype.account.account.update_account_number": "bancosecha.bancosecha.overrides.account.update_account_number",
+    "erpnext.accounts.doctype.account.account.merge_account": "bancosecha.bancosecha.overrides.account.merge_account",
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

@@ -158,7 +158,11 @@ def get_data(filters):
 
 
 def _build_conditions(filters):
-    conditions = ["ce.docstatus < 2", "ce.posting_date BETWEEN %(from_date)s AND %(to_date)s"]
+    conditions = [
+        "ce.docstatus < 2",
+        "(ce.workflow_state IS NULL OR ce.workflow_state != 'Void')",
+        "ce.posting_date BETWEEN %(from_date)s AND %(to_date)s",
+    ]
     values = {
         "from_date": filters.from_date,
         "to_date": filters.to_date,

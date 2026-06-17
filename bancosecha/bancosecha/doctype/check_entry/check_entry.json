@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "format:CK-{YY}-{######}",
+ "autoname": "CK-.YY.-.######",
  "creation": "2025-11-11 22:57:54.910517",
  "default_view": "List",
  "doctype": "DocType",
@@ -231,7 +231,7 @@
    "default": "0",
    "fieldname": "_10000",
    "fieldtype": "Int",
-   "label": "$100 Dollar",
+   "label": "$100",
    "non_negative": 1
   },
   {
@@ -254,28 +254,28 @@
    "default": "0",
    "fieldname": "_5000",
    "fieldtype": "Int",
-   "label": "$50 Dollar",
+   "label": "$50",
    "non_negative": 1
   },
   {
    "default": "0",
    "fieldname": "_2000",
    "fieldtype": "Int",
-   "label": "$20 Dollar",
+   "label": "$20",
    "non_negative": 1
   },
   {
    "default": "0",
    "fieldname": "_1000",
    "fieldtype": "Int",
-   "label": "$10 Dollar",
+   "label": "$10",
    "non_negative": 1
   },
   {
    "default": "0",
    "fieldname": "_100",
    "fieldtype": "Int",
-   "label": "$1 Dollar",
+   "label": "$1",
    "non_negative": 1
   },
   {
@@ -283,7 +283,7 @@
    "fieldname": "_050",
    "fieldtype": "Int",
    "hidden": 1,
-   "label": "$0.5",
+   "label": "$0.50",
    "non_negative": 1
   },
   {
@@ -313,7 +313,7 @@
   {
    "fieldname": "_500",
    "fieldtype": "Int",
-   "label": "$5 Dollar",
+   "label": "$5",
    "non_negative": 1
   },
   {
@@ -348,7 +348,7 @@
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "Check Entry",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

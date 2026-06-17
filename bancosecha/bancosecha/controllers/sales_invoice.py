@@ -4,6 +4,15 @@ from frappe.query_builder import Criterion
 from frappe.utils import nowdate
 from frappe.utils import flt
 
+
+PO_ELIGIBLE_INVOICE_TYPES = (
+    "Money Order",
+    "Money Transfer",
+    "Bill Payment",
+    "Shipping & Delivery",
+)
+
+
 def validate(doc, method):
     validate_pos(doc)
     set_cost_center_to_taxes(doc)
@@ -142,48 +151,97 @@ def before_submit(doc, event):
 
     if doc.is_return:
         return
-    if doc.custom_invoice_type not in [
-        "Money Order",
-        "Money Transfer",
-        "Bill Payment",
-        "Shipping & Delivery"
-    ]:
+    if doc.custom_invoice_type not in PO_ELIGIBLE_INVOICE_TYPES:
         return
 
     if not doc.custom_supplier:
         frappe.throw(_("Supplier is required before submitting this invoice."))
 
-    # Sum Service Charge items
-    service_charge_total = 0
-
-    for item in doc.items:
-        if item.item_code == "Service Charge":
-            service_charge_total += flt(item.amount)
-
     # Prevent duplicate PO creation
     if doc.custom_po_reference:
         return
 
-    po = frappe.new_doc("Purchase Order")
+    doc.custom_po_reference = _create_purchase_order_for_invoice(doc)
 
+
+def _create_purchase_order_for_invoice(doc):
+    """Create and submit a Purchase Order whose total equals the sum of the
+    Service Charge lines on the invoice. Returns the new PO name."""
+    service_charge_total = sum(
+        flt(item.amount) for item in doc.items if item.item_code == "Service Charge"
+    )
+
+    po_date = doc.posting_date or nowdate()
+
+    po = frappe.new_doc("Purchase Order")
     po.update({
         "supplier": doc.custom_supplier,
-        "schedule_date": nowdate(),
+        "transaction_date": po_date,
+        "schedule_date": po_date,
         "cost_center": doc.cost_center,
     })
-
     po.append("items", {
         "item_code": "Service Charge",
-        "schedule_date": nowdate(),
+        "schedule_date": po_date,
         "qty": 1,
         "rate": service_charge_total,
         "amount": service_charge_total,
     })
-
     po.set_missing_values()
     po.calculate_taxes_and_totals()
-
     po.insert(ignore_permissions=True)
     po.submit()
+    return po.name
 
-    doc.custom_po_reference = po.name
+
+@frappe.whitelist()
+def change_supplier(invoice_name: str, new_supplier: str):
+    """Cancel the Purchase Order linked to a submitted Sales Invoice, update
+    custom_supplier on the invoice, and create a new Purchase Order with the
+    new supplier."""
+    if not invoice_name or not new_supplier:
+        frappe.throw(_("Invoice and new supplier are required."))
+
+    inv = frappe.get_doc("Sales Invoice", invoice_name)
+    inv.check_permission("write")
+
+    if inv.docstatus != 1:
+        frappe.throw(_("Sales Invoice must be submitted."))
+
+    if inv.custom_invoice_type not in PO_ELIGIBLE_INVOICE_TYPES:
+        frappe.throw(_("This invoice type does not generate a Purchase Order."))
+
+    if inv.custom_supplier == new_supplier:
+        frappe.throw(_("The supplier is already set to {0}.").format(new_supplier))
+
+    old_po_name = inv.custom_po_reference
+
+    # Clear the link from the invoice BEFORE cancelling the PO so Frappe's
+    # link-integrity check doesn't block the cancel.
+    inv.db_set("custom_po_reference", None, update_modified=False)
+    inv.custom_po_reference = None
+
+    if old_po_name:
+        try:
+            old_po = frappe.get_doc("Purchase Order", old_po_name)
+            if old_po.docstatus == 1:
+                old_po.flags.ignore_links = True
+                old_po.cancel()
+        except frappe.DoesNotExistError:
+            frappe.log_error(
+                f"Purchase Order {old_po_name} not found while changing supplier on {invoice_name}",
+                "Change Supplier",
+            )
+
+    inv.db_set("custom_supplier", new_supplier, update_modified=True)
+    inv.custom_supplier = new_supplier
+
+    new_po_name = _create_purchase_order_for_invoice(inv)
+    inv.db_set("custom_po_reference", new_po_name, update_modified=True)
+
+    frappe.db.commit()
+    return {
+        "old_po": old_po_name,
+        "new_po": new_po_name,
+        "supplier": new_supplier,
+    }

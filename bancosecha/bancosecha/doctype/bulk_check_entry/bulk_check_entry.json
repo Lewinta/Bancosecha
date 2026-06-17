@@ -143,7 +143,7 @@
    "default": "0",
    "fieldname": "_2000",
    "fieldtype": "Int",
-   "label": "$20 ",
+   "label": "$20",
    "non_negative": 1
   },
   {
@@ -180,7 +180,7 @@
    "fieldname": "_050",
    "fieldtype": "Int",
    "hidden": 1,
-   "label": "$0.5",
+   "label": "$0.50",
    "non_negative": 1
   },
   {

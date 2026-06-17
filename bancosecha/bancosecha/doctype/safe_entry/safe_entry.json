@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "SE.########",
- "creation": "2026-03-14 19:11:09.721690",
+ "creation": "2026-06-15 19:47:25.618067",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -14,10 +14,17 @@
   "posting_date",
   "posting_time",
   "set_posting_time",
+  "is_adjustment",
   "accounts_section",
   "safe_account",
+  "safe_account_type",
+  "safe_party_type",
+  "cash_party_type",
   "column_break_bxca",
   "cash_account",
+  "cash_account_type",
+  "safe_party",
+  "cash_party",
   "payments_section",
   "_10000",
   "_5000",
@@ -106,6 +113,13 @@
    "label": "Set Posting Time"
   },
   {
+   "default": "0",
+   "fieldname": "is_adjustment",
+   "fieldtype": "Check",
+   "label": "Is Denomination Adjustment",
+   "description": "If checked, no Journal Entry is created on submit. Use to correct denomination counts in the Safe Denomination Summary report."
+  },
+  {
    "fieldname": "payments_section",
    "fieldtype": "Section Break",
    "label": "Payments"
@@ -169,7 +183,7 @@
    "fieldname": "_050",
    "fieldtype": "Int",
    "hidden": 1,
-   "label": "$0.5",
+   "label": "$0.50",
    "non_negative": 1
   },
   {
@@ -246,6 +260,54 @@
    "label": "Cash Account",
    "options": "Account",
    "reqd": 1
+  },
+  {
+   "fetch_from": "safe_account.account_type",
+   "fieldname": "safe_account_type",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Safe Account Type",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:['Receivable','Payable'].includes(doc.safe_account_type)",
+   "fieldname": "safe_party_type",
+   "fieldtype": "Select",
+   "label": "Safe Party Type",
+   "mandatory_depends_on": "eval:['Receivable','Payable'].includes(doc.safe_account_type)",
+   "options": "\nCustomer\nSupplier\nEmployee\nShareholder"
+  },
+  {
+   "depends_on": "eval:['Receivable','Payable'].includes(doc.safe_account_type)",
+   "fieldname": "safe_party",
+   "fieldtype": "Dynamic Link",
+   "label": "Safe Party",
+   "mandatory_depends_on": "eval:['Receivable','Payable'].includes(doc.safe_account_type)",
+   "options": "safe_party_type"
+  },
+  {
+   "fetch_from": "cash_account.account_type",
+   "fieldname": "cash_account_type",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Cash Account Type",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:['Receivable','Payable'].includes(doc.cash_account_type)",
+   "fieldname": "cash_party_type",
+   "fieldtype": "Select",
+   "label": "Cash Party Type",
+   "mandatory_depends_on": "eval:['Receivable','Payable'].includes(doc.cash_account_type)",
+   "options": "\nCustomer\nSupplier\nEmployee\nShareholder"
+  },
+  {
+   "depends_on": "eval:['Receivable','Payable'].includes(doc.cash_account_type)",
+   "fieldname": "cash_party",
+   "fieldtype": "Dynamic Link",
+   "label": "Cash Party",
+   "mandatory_depends_on": "eval:['Receivable','Payable'].includes(doc.cash_account_type)",
+   "options": "cash_party_type"
   }
  ],
  "grid_page_length": 50,
@@ -258,7 +320,7 @@
    "link_fieldname": "custom_safe_entry"
   }
  ],
- "modified": "2026-03-24 14:22:12.963381",
+ "modified": "2026-06-15 19:49:31.801083",
  "modified_by": "Administrator",
  "module": "Bancosecha",
  "name": "Safe Entry",

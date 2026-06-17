@@ -15,6 +15,26 @@ const DENOMINATIONS = {
     _001: 1        // $0.01
 };
 
+const PARTY_REQUIRED_ACCOUNT_TYPES = ["Receivable", "Payable"];
+
+function sync_party_for_account(frm, prefix) {
+    const account = frm.doc[`${prefix}_account`];
+    if (!account) {
+        frm.set_value(`${prefix}_account_type`, null);
+        frm.set_value(`${prefix}_party_type`, null);
+        frm.set_value(`${prefix}_party`, null);
+        return;
+    }
+    frappe.db.get_value("Account", account, "account_type").then(r => {
+        const account_type = (r.message && r.message.account_type) || "";
+        frm.set_value(`${prefix}_account_type`, account_type);
+        if (!PARTY_REQUIRED_ACCOUNT_TYPES.includes(account_type)) {
+            frm.set_value(`${prefix}_party_type`, null);
+            frm.set_value(`${prefix}_party`, null);
+        }
+    });
+}
+
 
 frappe.ui.form.on("Safe Entry", {
 	refresh(frm) {
@@ -35,6 +55,17 @@ frappe.ui.form.on("Safe Entry", {
     },
     set_posting_time(frm){
         frm.trigger("set_dfs");
+        if (!frm.doc.set_posting_time) {
+            const now = frappe.datetime.now_datetime().split(" ");
+            frm.set_value("posting_date", now[0]);
+            frm.set_value("posting_time", now[1]);
+        }
+    },
+    safe_account(frm) {
+        sync_party_for_account(frm, "safe");
+    },
+    cash_account(frm) {
+        sync_party_for_account(frm, "cash");
     },
     _001(frm) {
         frm.trigger("update_paid_amount_from_denominations");
